@@ -7,7 +7,7 @@ const ManagerCode = () => {
   const [usercodetrue, setUsercodetrue] = useState(false);
   const [usercode, setUsercode] = useState("");
   const [error, setError] = useState("");
-  const truecode = "01008903822";
+  const truecode = "1593572648";
 
   const handleCheckCode = () => {
     if (usercode === truecode) {
