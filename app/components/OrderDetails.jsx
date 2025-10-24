@@ -113,7 +113,7 @@ const OrderDetails = ({ orderId }) => {
 
   return (
     <div
-      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border-B-4 border-[#111144] opacity-0 animate-[goUp_1s_ease_forwards] 
+      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border-t-4 border-[#111144] opacity-0 animate-[goUp_1s_ease_forwards] 
       transition duration-300"
     >
       {showEditForm && (
