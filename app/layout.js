@@ -3,7 +3,11 @@ import "./globals.css";
 export const metadata = {
   title: "خدمة الطباعة - جامعة طيبة",
   description: "نظام إلكتروني لإدارة طلبات الطباعة في جامعة طيبة",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
