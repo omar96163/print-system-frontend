@@ -116,16 +116,6 @@ const OrderDetails = ({ orderId }) => {
       className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border-t-4 border-[#111144] opacity-0 animate-[goUp_1s_ease_forwards] 
       transition duration-300"
     >
-      {showEditForm && (
-        <div className="flex items-center justify-center mb-10">
-          <EditOrderForm
-            orderId={orderId}
-            currentOrder={order}
-            onClose={() => setShowEditForm(false)}
-          />
-        </div>
-      )}
-
       <h1 className="text-3xl font-bold text-center mb-6 text-[#111144]">
         تفاصيل الطلب # {order.orderNumber}
       </h1>
@@ -292,7 +282,7 @@ const OrderDetails = ({ orderId }) => {
         </div>
       )}
 
-      <div className="mt-8 text-center flex flex-row-reverse items-center justify-evenly">
+      <div className="mt-8 text-center flex flex-row-reverse items-center justify-start gap-5">
         <button
           onClick={handleDelete}
           className="py-3 px-6 rounded-2xl font-bold bg-red-500 text-white cursor-pointer active:scale-90 hover:scale-105 
@@ -343,6 +333,16 @@ const OrderDetails = ({ orderId }) => {
           العودة للطلبات
         </button>
       </div>
+
+      {showEditForm && (
+        <div className="flex items-center justify-center mb-10">
+          <EditOrderForm
+            orderId={orderId}
+            currentOrder={order}
+            onClose={() => setShowEditForm(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };
