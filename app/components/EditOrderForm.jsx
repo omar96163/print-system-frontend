@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { orderTypes } from "../utils/orderinfo";
 
 const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
-  const role = localStorage.getItem("role");
   const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -175,13 +174,13 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
           <form onSubmit={handleSubmit}>
             {/* الحقول الأساسية */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className={`${role }`}>
+              <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   الاسم
                 </label>
                 <input
                   name="clientName"
-                  placeholder={formData.clientName}
+                  value={formData.clientName}
                   onChange={handleChange}
                   className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
                 />
