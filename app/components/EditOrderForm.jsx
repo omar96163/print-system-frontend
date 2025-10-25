@@ -172,129 +172,242 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
           )}
 
           <form onSubmit={handleSubmit}>
-            {/* الحقول الأساسية */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  الاسم
-                </label>
-                <input
-                  name="clientName"
-                  value={formData.clientName}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  التواصل
-                </label>
-                <input
-                  name="contactInfo"
-                  value={formData.contactInfo}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
-                />
-              </div>
-            </div>
+            {/* الحقول العامة */}
+            <div className="border-t border-white/10 pt-6 mt-6">
+              <h3 className="font-bold text-lg mb-6 text-[#40E0D0]">
+                معلومات عامة
+              </h3>
 
-            {/* نوع الطلب */}
-            <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                نوع الطلب
-              </label>
-              <select
-                name="printType"
-                value={formData.printType}
-                onChange={handleChange}
-                className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl text-gray-100 focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-              >
-                <option value="">اختر النوع</option>
-                {orderTypes.printType.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* باقي الحقول */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  نوع الورق
-                </label>
-                <select
-                  name="paperType"
-                  value={formData.paperType}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-                >
-                  <option value="">اختر النوع</option>
-                  {orderTypes.paperType.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  المقاس
-                </label>
-                <select
-                  name="size"
-                  value={formData.size}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-                >
-                  <option value="">اختر المقاس</option>
-                  {orderTypes.size.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* الكمية */}
-            <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                الكمية
-              </label>
-              <input
-                type="number"
-                name="quantity"
-                min="1"
-                value={formData.quantity}
-                onChange={handleChange}
-                className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-              />
-            </div>
-
-            {/* الإنهاء */}
-            <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-300 mb-3">
-                خيارات الإنهاء
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {orderTypes.finishingOptions.map((opt) => (
-                  <label
-                    key={opt}
-                    className="flex items-center gap-2 bg-[#17174a]/50 px-3 py-1.5 rounded-lg border border-[#30307a] hover:bg-[#23235c] cursor-pointer transition"
-                  >
-                    <input
-                      type="checkbox"
-                      name="finishingOptions"
-                      value={opt}
-                      checked={(formData.finishingOptions || []).includes(opt)}
-                      onChange={handleChange}
-                      className="accent-[#40E0D0]"
-                    />
-                    <span className="text-gray-200 text-sm">{opt}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* الإسم */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    الاسم
                   </label>
-                ))}
+                  <input
+                    name="clientName"
+                    value={formData.clientName}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
+                  />
+                </div>
+
+                {/* معلومات التواصل */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    معلومات التواصل
+                  </label>
+                  <input
+                    name="contactInfo"
+                    value={formData.contactInfo}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* نوع الطلب */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    نوع الطلب
+                  </label>
+                  <select
+                    name="printType"
+                    value={formData.printType}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  >
+                    {orderTypes.printType.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* نوع الورق */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    نوع الورق
+                  </label>
+                  <select
+                    name="paperType"
+                    value={formData.paperType}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  >
+                    {orderTypes.paperType.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* مقاس الورق */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    المقاس
+                  </label>
+                  <select
+                    name="size"
+                    value={formData.size}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  >
+                    {orderTypes.size.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* الألوان */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    الألوان
+                  </label>
+                  <select
+                    name="colorOption"
+                    value={formData.colorOption}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  >
+                    {orderTypes.colorOption.map((opt) => (
+                      <option className="bg-[#111144de]" key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* وزن الورق */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    وزن الورق
+                  </label>
+                  <input
+                    name="paperWeight"
+                    placeholder="وزن الورق - مثال: 80 جم/م²"
+                    value={formData.paperWeight}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  />
+                </div>
+
+                {/*  وجه الطباعة */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    وجه الطباعة
+                  </label>
+                  <select
+                    name="sideOption"
+                    value={formData.sideOption}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  >
+                    {orderTypes.sideOption.map((opt) => (
+                      <option className="bg-[#111144de]" key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* الكميه */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    الكميه
+                  </label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  />
+                </div>
+
+                {/* حهة العميل */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    جهة العميل
+                  </label>
+                  <input
+                    name="departmentClient"
+                    placeholder="جهة العميل"
+                    value={formData.departmentClient}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  />
+                </div>
+              </div>
+
+              {/*  ملاحظات العميل */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  ملاحظات العميل
+                </label>
+                <textarea
+                  name="clientNotes"
+                  placeholder="ملاحظات العميل"
+                  value={formData.clientNotes}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                  rows="2"
+                />
+              </div>
+
+              {/* الإنهاء */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-300 mb-3">
+                  خيارات الإنهاء
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  {orderTypes.finishingOptions.map((opt) => (
+                    <label
+                      key={opt}
+                      className="flex items-center gap-2 bg-[#17174a]/50 px-3 py-1.5 rounded-lg border border-[#30307a] hover:bg-[#23235c] cursor-pointer transition"
+                    >
+                      <input
+                        type="checkbox"
+                        name="finishingOptions"
+                        value={opt}
+                        checked={(formData.finishingOptions || []).includes(
+                          opt
+                        )}
+                        onChange={handleChange}
+                        className="accent-[#40E0D0]"
+                      />
+                      <span className="text-gray-200 text-sm">{opt}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* رفع الملفات */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  رفع الملفات
+                </label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip,.rar,.txt"
+                  className="w-full p-3 bg-[#141440]/70 border border-[#30307a] rounded-xl text-gray-200 cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-[#40E0D0] file:text-[#0d0d26] hover:file:bg-[#2dd4bf] transition text-left direction-ltr"
+                />
               </div>
             </div>
 
@@ -330,7 +443,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                   <input
                     type="number"
                     name="totalPrice"
-                    min="0"
                     value={formData.totalPrice}
                     onChange={handleChange}
                     className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
@@ -346,7 +458,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                     onChange={handleChange}
                     className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
                   >
-                    <option value="">اختر القسم</option>
                     {orderTypes.departmentWork.map((dept) => (
                       <option key={dept} value={dept}>
                         {dept}
@@ -370,33 +481,19 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
               </div>
             </div>
 
-            {/* رفع الملفات */}
-            <div className="mb-6">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                الملفات الجديدة (اختياري)
-              </label>
-              <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip,.rar,.txt"
-                className="w-full p-3 bg-[#141440]/70 border border-[#30307a] rounded-xl text-gray-200 cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-[#40E0D0] file:text-[#0d0d26] hover:file:bg-[#2dd4bf] transition"
-              />
-            </div>
-
             {/* الأزرار */}
             <div className="flex justify-end gap-4 mt-10">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 bg-[#30307a]/40 text-gray-200 rounded-xl hover:bg-[#4040a0]/60 transition font-semibold shadow-md"
+                className="px-6 py-2.5 bg-[#30307a]/40 text-gray-200 font-bold rounded-xl shadow-lg hover:scale-105 transition transform duration-300 disabled:opacity-50 cursor-pointer active:scale-90"
               >
                 إلغاء
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2.5 bg-linear-to-r from-[#40E0D0] to-[#2dd4bf] text-[#0d0d26] font-bold rounded-xl shadow-lg hover:from-[#2dd4bf] hover:to-[#40E0D0] transition disabled:opacity-70"
+                className="px-6 py-2.5 bg-linear-to-r from-[#40e0d0] to-[#2dd4be83] text-[#0d0d26] font-bold rounded-xl shadow-lg hover:scale-105 transition transform duration-300 disabled:opacity-50 cursor-pointer active:scale-90"
               >
                 {loading ? "جاري التحديث..." : "تحديث الطلب"}
               </button>
