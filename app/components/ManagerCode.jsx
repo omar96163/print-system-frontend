@@ -12,7 +12,7 @@ const ManagerCode = () => {
   const handleCheckCode = async () => {
     try {
       const res = await axios.post(
-        "https://print-system-backend-production.up.railway.app/api/check-code",
+        "https://print-system-backend-production.up.railway.app/api/users/check-code",
         { code: usercode }
       );
       console.log(res);
