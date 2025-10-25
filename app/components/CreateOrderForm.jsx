@@ -132,7 +132,7 @@ const CreateOrderForm = () => {
       opacity-0 animate-[goUp_0.9s_ease_forwards] transition duration-300 p-10 mt-10"
       onSubmit={handleSubmit}
     >
-      <h2 className="font-extrabold text-3xl text-[#111144e3] animate-[color_2s_ease_infinite_alternate_1s]">
+      <h2 className="font-extrabold text-3xl text-[#111144e3]">
         إختر تفاصيل طلبك
       </h2>
 

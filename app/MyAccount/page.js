@@ -7,8 +7,9 @@ import { useState, useEffect } from "react";
 import OrdersList from "../components/OrdersList";
 import ReportsPage from "../components/ReportsPage";
 import UsersSection from "../components/UsersSection.jsx";
-import OrdersByStatus from "../components/OrdersByStatus";
 import UpdateUserForm from "../components/UpdateUserForm.jsx";
+import OrdersByStatus from "../components/OrdersByStatus.jsx";
+import CreateIssueForm from "../components/CreateIssueForm.jsx";
 import CreateOrderForm from "../components/CreateOrderForm.jsx";
 
 const MyAccount = () => {
@@ -20,6 +21,7 @@ const MyAccount = () => {
   const [allorders, setallorders] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [creatorder, setcreatorder] = useState(false);
+  const [creatissue, setcreatissue] = useState(false);
   const [getOrdersByStatus, setgetOrdersByStatus] = useState(false);
 
   const fetchMyAccount = async () => {
@@ -90,6 +92,7 @@ const MyAccount = () => {
               onClick={() => {
                 setIsEditing(!isEditing);
                 setgetOrdersByStatus(false);
+                setcreatissue(false);
                 setreports(false);
                 setcreatorder(false);
                 setallorders(false);
@@ -106,6 +109,7 @@ const MyAccount = () => {
                 setallorders(!allorders);
                 setgetOrdersByStatus(false);
                 setreports(false);
+                setcreatissue(false);
                 setcreatorder(false);
                 setIsEditing(false);
                 setalluser(false);
@@ -115,13 +119,28 @@ const MyAccount = () => {
             >
               {allorders ? "إخفاء جميع الطلبات" : "عرض جميع الطلبات"}
             </button>
+            {(user.role === roles.CLIENT || user.role === roles.SUPPORT) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setcreatissue(!creatissue);
+                  setcreatorder(false);
+                  setallorders(false);
+                  setIsEditing(false);
+                }}
+                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] text-white
+                cursor-pointer active:scale-90 hover:scale-105 transition transform duration-300 shadow-md"
+              >
+                {creatissue ? "إلغاء الإبلاغ" : "إبلاغ عن مشكلة"}
+              </button>
+            )}
             {user.role === roles.CLIENT && (
               <button
                 type="button"
                 onClick={() => {
                   setcreatorder(!creatorder);
+                  setcreatissue(false);
                   setallorders(false);
-
                   setIsEditing(false);
                 }}
                 className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
@@ -140,6 +159,7 @@ const MyAccount = () => {
                   setreports(false);
                   setallorders(false);
                   setIsEditing(false);
+                  setcreatissue(false);
                   setgetOrdersByStatus(false);
                 }}
                 className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
@@ -174,6 +194,7 @@ const MyAccount = () => {
                   setalluser(false);
                   setallorders(false);
                   setIsEditing(false);
+                  setcreatissue(false);
                 }}
                 className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
                     transition transform duration-300 shadow-md text-white "
@@ -188,6 +209,8 @@ const MyAccount = () => {
           {getOrdersByStatus && <OrdersByStatus />}
 
           {reports && <ReportsPage />}
+
+          {creatissue && <CreateIssueForm />}
 
           {allorders && <OrdersList />}
 
