@@ -5,6 +5,7 @@ import Loader from "../loading";
 import { roles } from "../utils/roles";
 import { useState, useEffect } from "react";
 import OrdersList from "../components/OrdersList";
+import ReportsPage from "../components/ReportsPage";
 import UsersSection from "../components/UsersSection.jsx";
 import OrdersByStatus from "../components/OrdersByStatus";
 import UpdateUserForm from "../components/UpdateUserForm.jsx";
@@ -13,6 +14,7 @@ import CreateOrderForm from "../components/CreateOrderForm.jsx";
 const MyAccount = () => {
   const [user, setUser] = useState(null);
   const [error, seterror] = useState("");
+  const [reports, setreports] = useState(false);
   const [loading, setLoading] = useState(false);
   const [alluser, setalluser] = useState(false);
   const [allorders, setallorders] = useState(true);
@@ -88,6 +90,7 @@ const MyAccount = () => {
               onClick={() => {
                 setIsEditing(!isEditing);
                 setgetOrdersByStatus(false);
+                setreports(false);
                 setcreatorder(false);
                 setallorders(false);
                 setalluser(false);
@@ -102,6 +105,7 @@ const MyAccount = () => {
               onClick={() => {
                 setallorders(!allorders);
                 setgetOrdersByStatus(false);
+                setreports(false);
                 setcreatorder(false);
                 setIsEditing(false);
                 setalluser(false);
@@ -117,6 +121,7 @@ const MyAccount = () => {
                 onClick={() => {
                   setcreatorder(!creatorder);
                   setallorders(false);
+
                   setIsEditing(false);
                 }}
                 className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
@@ -132,6 +137,7 @@ const MyAccount = () => {
                 type="button"
                 onClick={() => {
                   setalluser(!alluser);
+                  setreports(false);
                   setallorders(false);
                   setIsEditing(false);
                   setgetOrdersByStatus(false);
@@ -143,11 +149,28 @@ const MyAccount = () => {
               </button>
             )}
             {(user.role === roles.MANAGER ||
+              user.role === roles.DEPARTMENT_MANAGER) && (
+              <button
+                onClick={() => {
+                  setreports(!reports);
+                  setalluser(false);
+                  setallorders(false);
+                  setIsEditing(false);
+                  setgetOrdersByStatus(false);
+                }}
+                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                    transition transform duration-300 shadow-md text-white"
+              >
+                {reports ? "إخفاء التقارير" : "إنشاء التقارير"}
+              </button>
+            )}
+            {(user.role === roles.MANAGER ||
               user.role === roles.DEPARTMENT_MANAGER ||
               user.role === roles.SUPPORT) && (
               <button
                 onClick={() => {
                   setgetOrdersByStatus(!getOrdersByStatus);
+                  setreports(false);
                   setalluser(false);
                   setallorders(false);
                   setIsEditing(false);
@@ -163,6 +186,8 @@ const MyAccount = () => {
           </div>
 
           {getOrdersByStatus && <OrdersByStatus />}
+
+          {reports && <ReportsPage />}
 
           {allorders && <OrdersList />}
 

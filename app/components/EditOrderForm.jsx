@@ -1,11 +1,12 @@
-// src/components/EditOrderForm.jsx
 "use client";
 
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { orderTypes } from "../utils/orderinfo";
+import { roles } from "../utils/roles";
 
-const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
+const EditOrderForm = ({ orderId, currentOrder, onClose, onSuccess }) => {
+  const role = localStorage.getItem("role");
   const [error, setError] = useState("");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
     size: "",
     colorOption: "",
     sideOption: "",
-    quantity: 1,
+    quantity: "",
     clientNotes: "",
     departmentClient: "",
     paperWeight: "",
@@ -40,7 +41,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
         size: currentOrder.size || "",
         colorOption: currentOrder.colorOption || "",
         sideOption: currentOrder.sideOption || "",
-        quantity: currentOrder.quantity || 1,
+        quantity: currentOrder.quantity || "",
         clientNotes: currentOrder.clientNotes || "",
         departmentClient: currentOrder.departmentClient || "",
         paperWeight: currentOrder.paperWeight || "",
@@ -50,7 +51,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
         status: currentOrder.status || "",
         totalPrice: currentOrder.totalPrice || "",
         departmentWork: currentOrder.departmentWork || "",
-        departmentNotes: currentOrder.departmentNotes || "",
+        departmentNotes: "",
       });
     }
   }, [currentOrder]);
@@ -82,14 +83,85 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
     setLoading(true);
     setError("");
 
+    // ✅ دالة محسّنة للتحقق من التغييرات
+    const hasFieldChanges = () => {
+      const simpleFields = [
+        "clientName",
+        "contactInfo",
+        "printType",
+        "paperType",
+        "size",
+        "colorOption",
+        "sideOption",
+        "quantity",
+        "clientNotes",
+        "departmentClient",
+        "paperWeight",
+        "status",
+      ];
+
+      // إضافة الحقول الإدارية إذا لم يكن العميل
+      if (role !== roles.CLIENT) {
+        simpleFields.push("totalPrice", "departmentWork");
+      }
+
+      // التحقق من الحقول البسيطة
+      for (const field of simpleFields) {
+        if (formData[field] !== (currentOrder[field] || "")) {
+          return true;
+        }
+      }
+
+      // مقارنة finishingOptions
+      const currentFinishing = Array.isArray(currentOrder.finishingOptions)
+        ? currentOrder.finishingOptions
+        : [];
+      const formFinishing = formData.finishingOptions || [];
+
+      if (
+        JSON.stringify(currentFinishing.sort()) !==
+        JSON.stringify(formFinishing.sort())
+      ) {
+        return true;
+      }
+
+      // ✅ التحقق من departmentNotes (إذا كان هناك ملاحظة جديدة غير فاضية)
+      if (
+        role !== roles.CLIENT &&
+        typeof formData.departmentNotes === "string" &&
+        formData.departmentNotes.trim() !== ""
+      ) {
+        return true;
+      }
+
+      return false;
+    };
+
+    if (!hasFieldChanges() && files.length === 0) {
+      setError("لم يتم تغيير أي بيانات");
+      setLoading(false);
+      return;
+    }
+
+    // ✅ تجهيز البيانات للإرسال
     const bodyFormData = new FormData();
-    Object.keys(formData).forEach((key) => {
+
+    // ✅ إزالة الحقول المحظورة للعميل قبل الإرسال
+    const dataToSend = { ...formData };
+
+    if (role === roles.CLIENT) {
+      delete dataToSend.totalPrice;
+      delete dataToSend.departmentWork;
+      delete dataToSend.departmentNotes;
+    }
+
+    Object.keys(dataToSend).forEach((key) => {
       if (key === "finishingOptions") {
-        formData[key].forEach((opt) =>
+        dataToSend[key].forEach((opt) =>
           bodyFormData.append("finishingOptions", opt)
         );
-      } else if (formData[key] !== "") {
-        bodyFormData.append(key, formData[key]);
+      } else if (dataToSend[key] !== currentOrder[key]) {
+        bodyFormData.append(key, dataToSend[key]);
       }
     });
 
@@ -110,16 +182,30 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
       );
 
       alert(res.data.message);
+      if (onSuccess) {
+        await onSuccess();
+      }
       onClose();
     } catch (err) {
       if (err.response) {
-        setError(
-          err.response.data.error || err.response.data.message || "حدث خطأ"
-        );
+        console.log(err.response.data.error);
+        const errors =
+          err.response.data.error || err.response.data.message || "حدث خطأ";
+        if (errors) {
+          if (Array.isArray(errors)) {
+            setArrayErrors(errors);
+            setError("");
+          } else {
+            setError(errors);
+            setArrayErrors([]);
+          }
+        }
       } else if (err.request) {
         setError("لا يوجد اتصال بالإنترنت");
+        setArrayErrors([]);
       } else {
         setError("حدث خطأ غير متوقع");
+        setArrayErrors([]);
       }
     } finally {
       setLoading(false);
@@ -133,7 +219,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
   return (
     <div
       className="rounded-3xl shadow-[0_0_40px_#0b0b2e] backdrop-blur-2xl bg-linear-to-br from-[#111144a9] via-[#16163fb4] to-[#0a0a22ab] text-gray-100 
-      opacity-0 animate-[goDown_0.9s_ease_forwards] transition duration-300"
+      opacity-0 animate-[goDown_0.9s_ease_forwards] transition duration-300 mt-20"
     >
       <div className="rounded-3xl shadow-inner w-full max-w-3xl max-h-[92vh] overflow-y-auto border border-white/10 scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent">
         <style jsx>{`
@@ -150,7 +236,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
         `}</style>
 
         <div className="p-10">
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex justify-between items-center">
             <h2 className="text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
               تعديل الطلب{" "}
               <span className="text-[#40E0D0]">
@@ -159,17 +245,11 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-[#40E0D0] text-4xl transition transform hover:scale-110"
+              className="text-gray-400 hover:text-[#40E0D0] text-4xl transition transform hover:scale-110 cursor-pointer"
             >
               &times;
             </button>
           </div>
-
-          {error && (
-            <p className="text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
-              {error}
-            </p>
-          )}
 
           <form onSubmit={handleSubmit}>
             {/* الحقول العامة */}
@@ -179,7 +259,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* الإسم */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     الاسم
@@ -190,9 +269,13 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                     onChange={handleChange}
                     className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
                   />
+                  {getFieldError("clientName") && (
+                    <p className="mt-1 text-red-400 font-semibold text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
+                      {getFieldError("clientName")}
+                    </p>
+                  )}
                 </div>
 
-                {/* معلومات التواصل */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     معلومات التواصل
@@ -203,11 +286,15 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                     onChange={handleChange}
                     className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition placeholder-gray-400"
                   />
+                  {getFieldError("contactInfo") && (
+                    <p className="mt-1 text-red-400 font-semibold text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
+                      {getFieldError("contactInfo")}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* نوع الطلب */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     نوع الطلب
@@ -226,7 +313,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                   </select>
                 </div>
 
-                {/* نوع الورق */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     نوع الورق
@@ -247,7 +333,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* مقاس الورق */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     المقاس
@@ -266,7 +351,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                   </select>
                 </div>
 
-                {/* الألوان */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     الألوان
@@ -288,7 +372,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* وزن الورق */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     وزن الورق
@@ -302,7 +385,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                   />
                 </div>
 
-                {/*  وجه الطباعة */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     وجه الطباعة
@@ -324,7 +406,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* الكميه */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     الكميه
@@ -334,12 +415,15 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                     name="quantity"
                     value={formData.quantity}
                     onChange={handleChange}
-                    required
                     className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
                   />
+                  {getFieldError("quantity") && (
+                    <p className="mt-1 text-red-400 font-semibold text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
+                      {getFieldError("quantity")}
+                    </p>
+                  )}
                 </div>
 
-                {/* حهة العميل */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     جهة العميل
@@ -354,7 +438,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                 </div>
               </div>
 
-              {/*  ملاحظات العميل */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   ملاحظات العميل
@@ -369,7 +452,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                 />
               </div>
 
-              {/* الإنهاء */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-gray-300 mb-3">
                   خيارات الإنهاء
@@ -396,7 +478,6 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                 </div>
               </div>
 
-              {/* رفع الملفات */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   رفع الملفات
@@ -435,53 +516,63 @@ const EditOrderForm = ({ orderId, currentOrder, onClose }) => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    سعر الطلب
-                  </label>
-                  <input
-                    type="number"
-                    name="totalPrice"
-                    value={formData.totalPrice}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    قسم العمل
-                  </label>
-                  <select
-                    name="departmentWork"
-                    value={formData.departmentWork}
-                    onChange={handleChange}
-                    className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-                  >
-                    {orderTypes.departmentWork.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+              {role !== roles.CLIENT && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-300 mb-2">
+                        سعر الطلب
+                      </label>
+                      <input
+                        type="number"
+                        name="totalPrice"
+                        value={formData.totalPrice}
+                        onChange={handleChange}
+                        className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-300 mb-2">
+                        قسم العمل
+                      </label>
+                      <select
+                        name="departmentWork"
+                        value={formData.departmentWork}
+                        onChange={handleChange}
+                        className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                      >
+                        {orderTypes.departmentWork.map((dept) => (
+                          <option key={dept} value={dept}>
+                            {dept}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  ملاحظات الإدارة
-                </label>
-                <textarea
-                  name="departmentNotes"
-                  value={formData.departmentNotes}
-                  onChange={handleChange}
-                  className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
-                  rows="2"
-                />
-              </div>
+                  <div className="mb-6">
+                    <label className="block text-sm font-semibold text-gray-300 mb-2">
+                      ملاحظات الإدارة (جديدة)
+                    </label>
+                    <textarea
+                      name="departmentNotes"
+                      placeholder="أضف ملاحظة جديدة..."
+                      value={formData.departmentNotes}
+                      onChange={handleChange}
+                      className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] focus:outline-none transition"
+                      rows="2"
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* الأزرار */}
+            {error && (
+              <p className="text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
+                {error}
+              </p>
+            )}
+
             <div className="flex justify-end gap-4 mt-10">
               <button
                 type="button"
