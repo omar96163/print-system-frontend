@@ -10,10 +10,10 @@ const OrdersList = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const token = localStorage.getItem("token");
       setLoading(true);
 
       try {
+        const token = localStorage.getItem("token");
         const res = await axios.get(
           "https://print-system-backend-production.up.railway.app/api/orders",
           {

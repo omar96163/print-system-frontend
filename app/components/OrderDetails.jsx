@@ -2,16 +2,18 @@
 
 import axios from "axios";
 import Loader from "../loading";
+import { roles } from "../utils/roles";
 import { useEffect, useState } from "react";
 import EditOrderForm from "./EditOrderForm";
-import { useRouter } from "next/navigation";
 
 const OrderDetails = ({ orderId }) => {
-  const router = useRouter();
+  const role = localStorage.getItem("role");
   const [error, setError] = useState("");
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
 
   // دالة تنسيق التاريخ
   const formatDate = (dateString) => {
@@ -74,7 +76,9 @@ const OrderDetails = ({ orderId }) => {
         }
       );
       setOrder(res.data.data.order);
+      setNotifications(res.data.data.order.notifications || []);
       setError("");
+      return res.data.data.order;
     } catch (err) {
       setOrder(null);
       if (err.response) {
@@ -91,9 +95,47 @@ const OrderDetails = ({ orderId }) => {
     }
   };
 
+  const markAsRead = async () => {
+    setLoadingNotifications(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.patch(
+        `https://print-system-backend-production.up.railway.app/api/orders/notifications/${orderId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setNotifications(res.data.data);
+    } catch (err) {
+      if (err.response) {
+        setError(
+          err.response.data.error || err.response.data.message || "حدث خطأ"
+        );
+      } else if (err.request) {
+        setError("لا يوجد اتصال بالإنترنت");
+      } else {
+        setError("حدث خطأ غير متوقع");
+      }
+    } finally {
+      setLoadingNotifications(false);
+    }
+  };
+
   useEffect(() => {
-    fetchOrder();
-  }, []);
+    if (orderId) {
+      (async () => {
+        const fetchedOrder = await fetchOrder();
+
+        if (role === roles.CLIENT && fetchedOrder) {
+          const hasUnread = fetchedOrder.notifications?.some((n) => !n.read);
+          if (hasUnread) {
+            await markAsRead();
+          }
+        }
+      })();
+    }
+  }, [orderId]);
 
   if (loading) return <Loader />;
   if (error) {
@@ -281,6 +323,45 @@ const OrderDetails = ({ orderId }) => {
               </a>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* الاشعارات */}
+      {role === roles.CLIENT && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold text-[#111144] mb-3">الإشعارات</h2>
+
+          {notifications.length === 0 ? (
+            <p className="text-gray-500 text-center py-4">لا توجد إشعارات</p>
+          ) : (
+            <div className="space-y-3">
+              {notifications
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((note, index) => (
+                  <div
+                    key={index}
+                    className={`p-3 rounded-lg border ${
+                      note.read
+                        ? "bg-gray-50 border-gray-200"
+                        : "bg-blue-50 border-blue-300 border-l-4"
+                    }`}
+                  >
+                    <p
+                      className={
+                        note.read
+                          ? "text-gray-700"
+                          : "text-blue-800 font-medium"
+                      }
+                    >
+                      {note.message}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formatDate(note.createdAt)}
+                    </p>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
 
