@@ -4,8 +4,10 @@ import axios from "axios";
 import Loader from "../loading";
 import { useEffect, useState } from "react";
 import EditOrderForm from "./EditOrderForm";
+import { useRouter } from "next/navigation";
 
 const OrderDetails = ({ orderId }) => {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -340,6 +342,9 @@ const OrderDetails = ({ orderId }) => {
             orderId={orderId}
             currentOrder={order}
             onClose={() => setShowEditForm(false)}
+            onSuccess={async () => {
+              await fetchOrder();
+            }}
           />
         </div>
       )}
