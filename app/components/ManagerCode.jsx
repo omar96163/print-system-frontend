@@ -2,20 +2,32 @@
 
 import React, { useState } from "react";
 import Register from "./Register";
+import axios from "axios";
 
 const ManagerCode = () => {
   const [usercodetrue, setUsercodetrue] = useState(false);
   const [usercode, setUsercode] = useState("");
   const [error, setError] = useState("");
-  const truecode = "خالد";
 
-  const handleCheckCode = () => {
-    if (usercode === truecode) {
-      setError("");
-      alert("تم التحقق بنجاح!");
+  const handleCheckCode = async () => {
+    try {
+      const res = await axios.post(
+        "https://print-system-backend-production.up.railway.app/api/check-code",
+        { code: usercode }
+      );
+      console.log(res);
       setUsercodetrue(true);
-    } else {
-      setError("الكود غير صحيح!");
+    } catch (err) {
+      console.log(err);
+      if (err.response) {
+        setError(
+          err.response.data.error || err.response.data.message || "حدث خطأ"
+        );
+      } else if (err.request) {
+        setError("لا يوجد اتصال بالإنترنت");
+      } else {
+        setError("حدث خطأ غير متوقع");
+      }
     }
   };
 
