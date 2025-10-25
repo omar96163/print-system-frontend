@@ -124,9 +124,11 @@ const MyAccount = () => {
                 type="button"
                 onClick={() => {
                   setcreatissue(!creatissue);
+                  setgetOrdersByStatus(false);
                   setcreatorder(false);
                   setallorders(false);
                   setIsEditing(false);
+                  setalluser(false);
                 }}
                 className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] text-white
                 cursor-pointer active:scale-90 hover:scale-105 transition transform duration-300 shadow-md"
