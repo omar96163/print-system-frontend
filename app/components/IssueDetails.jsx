@@ -5,12 +5,14 @@ import Loader from "../loading";
 import { roles } from "../utils/roles";
 import { issueStatus } from "../utils/issueinfo";
 import React, { useEffect, useState } from "react";
+import EditIssueForm from "./EditIssueForm";
 
 const IssueDetails = ({ issueId }) => {
   const [error, setError] = useState("");
   const [issue, setIssue] = useState(null);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
+  const [ShowEditForm, setShowEditForm] = useState(false);
 
   const fetchIssue = async () => {
     try {
@@ -198,7 +200,39 @@ const IssueDetails = ({ issueId }) => {
                 حذف البلاغ
               </button>
             )}
+            <button
+              onClick={() => setShowEditForm(true)}
+              className="py-3 px-6 rounded-2xl font-bold bg-blue-500 text-white cursor-pointer active:scale-90 hover:scale-105 
+              transition transform duration-300 shadow-md flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+              تعديل الطلب
+            </button>
           </div>
+
+          {ShowEditForm && (
+            <EditIssueForm
+              issueId={issueId}
+              currentIssue={issue}
+              onClose={() => setShowEditForm(false)}
+              onSuccess={async () => {
+                await fetchIssue();
+              }}
+            />
+          )}
         </div>
       )}
     </div>
