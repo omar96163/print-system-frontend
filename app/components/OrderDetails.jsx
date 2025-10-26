@@ -13,7 +13,6 @@ const OrderDetails = ({ orderId }) => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [loadingNotifications, setLoadingNotifications] = useState(false);
 
   // دالة تنسيق التاريخ
   const formatDate = (dateString) => {
@@ -96,7 +95,6 @@ const OrderDetails = ({ orderId }) => {
   };
 
   const markAsRead = async () => {
-    setLoadingNotifications(true);
     try {
       const token = localStorage.getItem("token");
       const res = await axios.patch(
@@ -117,8 +115,6 @@ const OrderDetails = ({ orderId }) => {
       } else {
         setError("حدث خطأ غير متوقع");
       }
-    } finally {
-      setLoadingNotifications(false);
     }
   };
 
