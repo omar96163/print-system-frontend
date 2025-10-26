@@ -60,13 +60,13 @@ const OrdersByStatus = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 mt-10">
+    <div className="w-full max-w-6xl mx-auto opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 mt-10 p-5">
       <h2 className="text-2xl font-bold text-center mb-6 text-[#111144]">
         إدارة الطلبات حسب الحالة
       </h2>
 
       {/* تبويبات الحالات */}
-      <div className="flex flex-wrap justify-center gap-2 mb-8">
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
         {orderTypes.status.map((status) => (
           <button
             key={status}
@@ -94,14 +94,16 @@ const OrdersByStatus = () => {
         <Link key={order._id} href={`/order/${order._id}`} className="block">
           <div
             className={`bg-white rounded-xl shadow-md p-5 hover:shadow-xl transition duration-300 border-t-4 mb-5 opacity-0 animate-[goUp_1s_ease_forwards] ${
-              order.status === "قيد الانتظار"
+              order.status === "قيد المراجعة"
                 ? "border-yellow-500"
                 : order.status === "قيد الطباعة"
                 ? "border-blue-500"
-                : order.status === "منتهي"
+                : order.status === "جاهزة للتسليم"
                 ? "border-green-500"
-                : order.status === "مرفوض"
+                : order.status === "مرفوضة"
                 ? "border-red-500"
+                : order.status === "ملغي"
+                ? "border-purple-500"
                 : "border-gray-300"
             }`}
           >
@@ -111,14 +113,16 @@ const OrdersByStatus = () => {
               </h3>
               <span
                 className={`px-2 py-1 rounded text-xs font-semibold ${
-                  order.status === "قيد الانتظار"
+                  order.status === "قيد المراجعة"
                     ? "bg-yellow-100 text-yellow-800"
                     : order.status === "قيد الطباعة"
                     ? "bg-blue-100 text-blue-800"
-                    : order.status === "منتهي"
+                    : order.status === "جاهزة للتسليم"
                     ? "bg-green-100 text-green-800"
-                    : order.status === "مرفوض"
+                    : order.status === "مرفوضة"
                     ? "bg-red-100 text-red-800"
+                    : order.status === "ملغي"
+                    ? "bg-purple-100 text-purple-800"
                     : "bg-gray-100 text-gray-800"
                 }`}
               >

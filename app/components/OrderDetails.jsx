@@ -135,7 +135,7 @@ const OrderDetails = ({ orderId }) => {
 
   return (
     <div
-      className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border-t-4 border-[#111144] opacity-0 animate-[goUp_1s_ease_forwards] 
+      className="max-w-4xl mx-5 md:mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border-t-4 border-[#111144] opacity-0 animate-[goUp_1s_ease_forwards] 
       transition duration-300"
     >
       {loading && <Loader />}
@@ -147,7 +147,7 @@ const OrderDetails = ({ orderId }) => {
       )}
 
       {!loading && !error && order && (
-        <div>
+        <div className="mx-5">
           <h1 className="text-3xl font-bold text-center mb-6 text-[#111144]">
             تفاصيل الطلب # {order.orderNumber}
           </h1>
@@ -377,7 +377,7 @@ const OrderDetails = ({ orderId }) => {
             </div>
           )}
 
-          <div className="mt-8 text-center flex flex-row-reverse items-center justify-start gap-5">
+          <div className="mt-8 text-center flex flex-row-reverse items-center justify-start flex-wrap gap-5">
             <button
               onClick={handleDelete}
               className="py-3 px-6 rounded-2xl font-bold bg-red-500 text-white cursor-pointer active:scale-90 hover:scale-105 

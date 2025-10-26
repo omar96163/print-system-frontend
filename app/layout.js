@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content={metadata.viewport} />
         <title>{metadata.title}</title>
       </head>
-      <body className="text-gray-200 p-5 min-h-screen">
+      <body className="text-gray-200 bg-gray-50 min-h-screen">
         <main>{children}</main>
       </body>
     </html>

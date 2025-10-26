@@ -119,13 +119,13 @@ const UsersSection = ({ Role, User }) => {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 mt-10">
+    <div className="w-full max-w-6xl mx-auto opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 my-10">
       {errors && (
         <p className="text-red-500 font-semibold underline text-center">
           {errors}
         </p>
       )}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-5">
         {users &&
           users.map((user) => (
             <div

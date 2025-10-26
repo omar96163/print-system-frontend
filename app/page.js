@@ -11,7 +11,7 @@ const Home = () => {
   const [manaegrlog, setmanaegrlog] = useState(false);
 
   return (
-    <section className="min-h-screen flex flex-col md:flex-row items-center justify-around">
+    <section className="min-h-screen flex flex-col md:flex-row items-center justify-around gap-y-10 gap-x-20 p-5">
       {/* الصورة والزر */}
       <section className="flex flex-col items-center justify-center gap-5">
         <Image

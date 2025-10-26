@@ -89,7 +89,7 @@ const Register = ({ isManager }) => {
 
   return (
     <form
-      className="flex flex-col gap-8 items-center justify-center rounded-3xl w-[500px] px-8 py-16 shadow-md hover:shadow-2xl
+      className="flex flex-col gap-8 items-center justify-center rounded-3xl lg:w-[500px] px-8 py-16 shadow-md hover:shadow-2xl
         opacity-0 animate-[goDown_1s_ease_forwards_.5s] transition duration-300 border-t-4 border-[#111144]"
       onSubmit={handleSubmit}
     >
@@ -211,11 +211,13 @@ const Register = ({ isManager }) => {
               }
             }}
           >
-            <option>{roles.CLIENT}</option>
-            <option>{roles.MANAGER}</option>
-            <option>{roles.SUPPORT}</option>
-            <option>{roles.PRINT_EMPLOYEE}</option>
-            <option>{roles.DEPARTMENT_MANAGER}</option>
+            <option className="bg-[#111144de]">{roles.CLIENT}</option>
+            <option className="bg-[#111144de]">{roles.MANAGER}</option>
+            <option className="bg-[#111144de]">{roles.SUPPORT}</option>
+            <option className="bg-[#111144de]">{roles.PRINT_EMPLOYEE}</option>
+            <option className="bg-[#111144de]">
+              {roles.DEPARTMENT_MANAGER}
+            </option>
           </select>
         </div>
       )}

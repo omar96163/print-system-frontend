@@ -63,176 +63,185 @@ const MyAccount = () => {
   }
 
   return (
-    <section className="p-8 text-gray-800">
+    <section className="text-gray-800">
       {user && (
-        <article className="mt-4 flex flex-col items-center justify-center gap-5">
-          <Image
-            src={
-              user.avatar === "default"
-                ? "/شعار-الجامعة.png"
-                : `https://print-system-backend-production.up.railway.app/uploads/images/${user.avatar}`
-            }
-            alt="avatar"
-            width={128}
-            height={128}
-            className="w-32 h-32 rounded-full mt-4 object-contain opacity-0 animate-[goDown_1s_ease_forwards_.4s] transition duration-300"
-          />
+        <article className="flex flex-col items-center justify-center gap-5">
+          <div className="flex flex-col items-center justify-center gap-5 bg-linear-to-b from-gray-300 to-gray-50 w-full p-5">
+            <Image
+              src={
+                user.avatar === "default"
+                  ? "/شعار-الجامعة.png"
+                  : `https://print-system-backend-production.up.railway.app/uploads/images/${user.avatar}`
+              }
+              alt="avatar"
+              width={128}
+              height={128}
+              className="w-32 h-32 rounded-full mt-4 object-contain opacity-0 animate-[goDown_1s_ease_forwards_.4s] transition duration-300"
+            />
 
-          <p className="opacity-0 animate-[goDown_1s_ease_forwards_.7s] transition duration-300">
-            الإسم : {user.name}
-          </p>
-          <p className="opacity-0 animate-[goDown_1s_ease_forwards_.9s] transition duration-300">
-            الدور : {user.role}
-          </p>
-          <p className="opacity-0 animate-[goDown_1s_ease_forwards_1.1s] transition duration-300">
-            البريد الإلكتروني :{" "}
-            <strong className="direction-ltr inline-block">{user.email}</strong>
-          </p>
+            <p className="opacity-0 animate-[goDown_1s_ease_forwards_.7s] transition duration-300 text-lg">
+              الإسم »{" "}
+              <strong className="text-[#111144] capitalize">{user.name}</strong>
+            </p>
+            <p className="opacity-0 animate-[goDown_1s_ease_forwards_.9s] transition duration-300">
+              الدور »{" "}
+              <strong className="text-[#111144] capitalize">{user.role}</strong>
+            </p>
+            <p className="opacity-0 animate-[goDown_1s_ease_forwards_1.1s] transition duration-300">
+              البريد الإلكتروني »{" "}
+              <strong className="direction-ltr inline-block text-[#111144]">
+                {user.email}
+              </strong>
+            </p>
 
-          <div className="flex flex-row flex-wrap gap-5 opacity-0 animate-[goDown_1s_ease_forwards_1.3s] transition duration-300">
-            <button
-              onClick={() => {
-                setIsEditing(!isEditing);
-                setgetOrdersByStatus(false);
-                setallissue(false);
-                setcreatissue(false);
-                setreports(false);
-                setcreatorder(false);
-                setallorders(false);
-                setalluser(false);
-              }}
-              className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-              transition transform duration-300 shadow-md text-white"
+            <div
+              className="flex flex-row flex-wrap items-center justify-center gap-5 opacity-0 animate-[goDown_1s_ease_forwards_1.3s] 
+              transition duration-300 mt-5"
             >
-              {isEditing ? "إلغاء تعديل البيانات" : "تعديل البيانات الشخصية"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setallorders(!allorders);
-                setgetOrdersByStatus(false);
-                setreports(false);
-                setallissue(false);
-                setcreatissue(false);
-                setcreatorder(false);
-                setIsEditing(false);
-                setalluser(false);
-              }}
-              className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                transition transform duration-300 shadow-md text-white"
-            >
-              {allorders ? "إخفاء جميع الطلبات" : "عرض جميع الطلبات"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setallissue(!allissue);
-                setalluser(false);
-                setreports(false);
-                setallorders(false);
-                setIsEditing(false);
-                setcreatorder(false);
-                setcreatissue(false);
-                setgetOrdersByStatus(false);
-              }}
-              className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                transition transform duration-300 shadow-md text-white"
-            >
-              {allissue ? "إخفاء جميع الإبلاغات" : "عرض جميع الإبلاغات"}
-            </button>
-            {(user.role === roles.CLIENT ||
-              user.role === roles.PRINT_EMPLOYEE) && (
               <button
-                type="button"
                 onClick={() => {
-                  setcreatissue(!creatissue);
+                  setIsEditing(!isEditing);
                   setgetOrdersByStatus(false);
+                  setallissue(false);
+                  setcreatissue(false);
+                  setreports(false);
                   setcreatorder(false);
-                  setallissue(false);
                   setallorders(false);
+                  setalluser(false);
+                }}
+                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+               transition transform duration-300 shadow-md text-white"
+              >
+                {isEditing ? "إلغاء تعديل البيانات" : "تعديل البيانات الشخصية"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setallorders(!allorders);
+                  setgetOrdersByStatus(false);
+                  setreports(false);
+                  setallissue(false);
+                  setcreatissue(false);
+                  setcreatorder(false);
                   setIsEditing(false);
                   setalluser(false);
                 }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] text-white
+                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white"
+              >
+                {allorders ? "إخفاء جميع الطلبات" : "عرض جميع الطلبات"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setallissue(!allissue);
+                  setalluser(false);
+                  setreports(false);
+                  setallorders(false);
+                  setIsEditing(false);
+                  setcreatorder(false);
+                  setcreatissue(false);
+                  setgetOrdersByStatus(false);
+                }}
+                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white"
+              >
+                {allissue ? "إخفاء جميع الإبلاغات" : "عرض جميع الإبلاغات"}
+              </button>
+              {(user.role === roles.CLIENT ||
+                user.role === roles.PRINT_EMPLOYEE) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setcreatissue(!creatissue);
+                    setgetOrdersByStatus(false);
+                    setcreatorder(false);
+                    setallissue(false);
+                    setallorders(false);
+                    setIsEditing(false);
+                    setalluser(false);
+                  }}
+                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] text-white
                 cursor-pointer active:scale-90 hover:scale-105 transition transform duration-300 shadow-md"
-              >
-                {creatissue ? "إلغاء الإبلاغ" : "الدعم الفني"}
-              </button>
-            )}
-            {user.role === roles.CLIENT && (
-              <button
-                type="button"
-                onClick={() => {
-                  setcreatorder(!creatorder);
-                  setcreatissue(false);
-                  setallissue(false);
-                  setallorders(false);
-                  setIsEditing(false);
-                }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                >
+                  {creatissue ? "إلغاء الإبلاغ" : "الدعم الفني"}
+                </button>
+              )}
+              {user.role === roles.CLIENT && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setcreatorder(!creatorder);
+                    setcreatissue(false);
+                    setallissue(false);
+                    setallorders(false);
+                    setIsEditing(false);
+                  }}
+                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
                     transition transform duration-300 shadow-md text-white"
-              >
-                {creatorder ? "إلغاء الطلب" : "إنشاء طلب"}
-              </button>
-            )}
-            {(user.role === roles.MANAGER ||
-              user.role === roles.DEPARTMENT_MANAGER ||
-              user.role === roles.SUPPORT) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setalluser(!alluser);
-                  setreports(false);
-                  setallorders(false);
-                  setIsEditing(false);
-                  setallissue(false);
-                  setcreatissue(false);
-                  setgetOrdersByStatus(false);
-                }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                >
+                  {creatorder ? "إلغاء الطلب" : "إنشاء طلب"}
+                </button>
+              )}
+              {(user.role === roles.MANAGER ||
+                user.role === roles.DEPARTMENT_MANAGER ||
+                user.role === roles.SUPPORT) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setalluser(!alluser);
+                    setreports(false);
+                    setallorders(false);
+                    setIsEditing(false);
+                    setallissue(false);
+                    setcreatissue(false);
+                    setgetOrdersByStatus(false);
+                  }}
+                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
                   transition transform duration-300 shadow-md text-white"
-              >
-                {alluser ? "إخفاء المستخدمين 👥" : "عرض المستخدمين 👥"}
-              </button>
-            )}
-            {(user.role === roles.MANAGER ||
-              user.role === roles.DEPARTMENT_MANAGER) && (
-              <button
-                onClick={() => {
-                  setreports(!reports);
-                  setalluser(false);
-                  setallorders(false);
-                  setallissue(false);
-                  setIsEditing(false);
-                  setgetOrdersByStatus(false);
-                }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                >
+                  {alluser ? "إخفاء المستخدمين 👥" : "عرض المستخدمين 👥"}
+                </button>
+              )}
+              {(user.role === roles.MANAGER ||
+                user.role === roles.DEPARTMENT_MANAGER) && (
+                <button
+                  onClick={() => {
+                    setreports(!reports);
+                    setalluser(false);
+                    setallorders(false);
+                    setallissue(false);
+                    setIsEditing(false);
+                    setgetOrdersByStatus(false);
+                  }}
+                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
                     transition transform duration-300 shadow-md text-white"
-              >
-                {reports ? "إخفاء التقارير" : "إنشاء التقارير"}
-              </button>
-            )}
-            {(user.role === roles.MANAGER ||
-              user.role === roles.DEPARTMENT_MANAGER ||
-              user.role === roles.SUPPORT) && (
-              <button
-                onClick={() => {
-                  setgetOrdersByStatus(!getOrdersByStatus);
-                  setreports(false);
-                  setalluser(false);
-                  setallissue(false);
-                  setallorders(false);
-                  setIsEditing(false);
-                  setcreatissue(false);
-                }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                >
+                  {reports ? "إخفاء التقارير" : "إنشاء التقارير"}
+                </button>
+              )}
+              {(user.role === roles.MANAGER ||
+                user.role === roles.DEPARTMENT_MANAGER ||
+                user.role === roles.SUPPORT) && (
+                <button
+                  onClick={() => {
+                    setgetOrdersByStatus(!getOrdersByStatus);
+                    setreports(false);
+                    setalluser(false);
+                    setallissue(false);
+                    setallorders(false);
+                    setIsEditing(false);
+                    setcreatissue(false);
+                  }}
+                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
                     transition transform duration-300 shadow-md text-white "
-              >
-                {getOrdersByStatus
-                  ? "إخفاء الطلبات حسب الحالة"
-                  : "عرض الطلبات حسب الحالة"}
-              </button>
-            )}
+                >
+                  {getOrdersByStatus
+                    ? "إخفاء الطلبات حسب الحالة"
+                    : "عرض الطلبات حسب الحالة"}
+                </button>
+              )}
+            </div>
           </div>
 
           {getOrdersByStatus && <OrdersByStatus />}

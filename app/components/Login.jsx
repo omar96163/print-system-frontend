@@ -49,7 +49,7 @@ const Login = () => {
 
   return (
     <form
-      className="flex flex-col gap-14 items-center justify-center rounded-3xl w-[500px] px-8 py-16 shadow-md hover:scale-105 hover:shadow-2xl
+      className="flex flex-col gap-14 items-center justify-center rounded-3xl lg:w-[500px] px-8 py-16 shadow-md hover:scale-105 hover:shadow-2xl
       opacity-0 animate-[goDown_1s_ease_forwards_.5s] transition duration-300 border-t-4 border-[#111144]"
       onSubmit={handleSubmit}
     >

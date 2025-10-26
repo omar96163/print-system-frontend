@@ -133,8 +133,8 @@ const UpdateUserForm = ({ UserData, onUpdateSuccess }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-8 items-center justify-center rounded-3xl w-[500px] px-8 py-16 shadow-md hover:shadow-2xl
-      opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 border-t-4 border-[#111144] mt-10"
+      className="flex flex-col gap-8 items-center justify-center rounded-3xl md:w-[500px] px-8 py-16 shadow-md hover:shadow-2xl
+      opacity-0 animate-[goUp_1s_ease_forwards] transition duration-300 border-t-4 border-[#111144] my-10 mx-5"
     >
       <h2 className="font-extrabold text-3xl text-[#111144e3] animate-[color_2s_ease_infinite_alternate_1s]">
         تعديل البيانات الشخصية
@@ -237,15 +237,16 @@ const UpdateUserForm = ({ UserData, onUpdateSuccess }) => {
             name="role"
             value={formData.role}
             onChange={handleChange}
-            className="w-full p-3 rounded-lg bg-linear-to-r from-[#11114471] to-[#111144de] border text-white
+            className="w-full p-3 rounded-lg bg-linear-to-r from-[#11114471] to-[#111144de] border text-white text-left direction-ltr
             focus:outline-none focus:ring-2 focus:ring-[#111144] shadow-[0_10px_15px_-8px_rgba(0,0,0,0.7)] font-semibold"
           >
-            <option value="">اختر دور جديد (اختياري)</option>
-            <option value={roles.CLIENT}>عميل</option>
-            <option value={roles.SUPPORT}>دعم فني</option>
-            <option value={roles.PRINT_EMPLOYEE}>موظف طباعة</option>
-            <option value={roles.DEPARTMENT_MANAGER}>مدير قسم</option>
-            <option value={roles.MANAGER}>مدير</option>
+            <option className="bg-[#111144de]">{roles.CLIENT}</option>
+            <option className="bg-[#111144de]">{roles.MANAGER}</option>
+            <option className="bg-[#111144de]">{roles.SUPPORT}</option>
+            <option className="bg-[#111144de]">{roles.PRINT_EMPLOYEE}</option>
+            <option className="bg-[#111144de]">
+              {roles.DEPARTMENT_MANAGER}
+            </option>
           </select>
           {errors
             .filter((err) => err.path === "role")

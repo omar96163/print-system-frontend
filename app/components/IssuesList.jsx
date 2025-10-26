@@ -49,9 +49,9 @@ const IssuesList = () => {
 
   return (
     <div
-      className="rounded-3xl shadow-[0_0_40px_#0b0b2e] backdrop-blur-2xl 
+      className="rounded-3xl shadow-[0_0_40px_#0b0b2e] backdrop-blur-2xl p-10 my-10 mx-5 md:w-[800px]
       bg-linear-to-b from-[#111144c2] to-[#0a0a228c] text-gray-100 
-      opacity-0 animate-[goUp_0.9s_ease_forwards] transition duration-300 p-10 mt-10 md:w-[800px]"
+      opacity-0 animate-[goUp_0.9s_ease_forwards] transition duration-300 "
     >
       <h2 className="font-extrabold text-3xl text-[#40E0D0] text-center mb-6">
         قائمة البلاغات
