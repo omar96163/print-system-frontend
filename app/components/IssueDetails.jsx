@@ -1,13 +1,15 @@
 "use client";
 
 import axios from "axios";
+import Loader from "../loading";
+import { roles } from "../utils/roles";
 import { issueStatus } from "../utils/issueinfo";
 import React, { useEffect, useState } from "react";
-import Loader from "../loading";
 
 const IssueDetails = ({ issueId }) => {
   const [error, setError] = useState("");
   const [issue, setIssue] = useState(null);
+  const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(true);
 
   const fetchIssue = async () => {
@@ -40,7 +42,45 @@ const IssueDetails = ({ issueId }) => {
       setLoading(false);
     }
   };
-  
+
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        "هل أنت متأكد من حذف هذا الإبلاغ ؟ لا يمكن التراجع عن هذه الخطوة"
+      )
+    ) {
+      return;
+    }
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.delete(
+        `https://print-system-backend-production.up.railway.app/api/issues/${issueId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log(res);
+      alert(res.data.message);
+      window.history.back();
+    } catch (err) {
+      console.log(err);
+      if (err.response) {
+        setError(
+          err.response.data.error || err.response.data.message || "حدث خطأ"
+        );
+      } else if (err.request) {
+        setError("لا يوجد اتصال بالإنترنت");
+      } else {
+        setError("حدث خطأ غير متوقع");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchIssue();
   }, [issueId]);
@@ -131,10 +171,33 @@ const IssueDetails = ({ issueId }) => {
             <button
               onClick={() => window.history.back()}
               className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-            transition transform duration-300 shadow-md text-white text-left"
+              transition transform duration-300 shadow-md text-white"
             >
               العودة للطلبات
             </button>
+            {role !== roles.SUPPORT && (
+              <button
+                onClick={handleDelete}
+                className="py-3 px-6 rounded-2xl font-bold bg-red-500 text-white cursor-pointer active:scale-90 hover:scale-105 
+              transition transform duration-300 shadow-md flex items-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                حذف البلاغ
+              </button>
+            )}
           </div>
         </div>
       )}
