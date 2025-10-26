@@ -15,7 +15,14 @@ const CreateIssueForm = () => {
 
   // تغيير القيم
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    // نحذف رسالة الخطأ الخاصة بنفس الحقل
+    setarrayerrors((prev) => prev.filter((err) => err.path !== name));
+
+    // لو فيه رسالة خطأ عامة نخفيها لما المستخدم يبدأ يكتب
+    seterror("");
   };
 
   // اختيار الملفات
@@ -84,11 +91,11 @@ const CreateIssueForm = () => {
   return (
     <form
       className="rounded-3xl shadow-[0_0_40px_#0b0b2e] backdrop-blur-2xl bg-linear-to-b from-[#111144c2] to-[#0a0a228c] text-gray-100 
-      opacity-0 animate-[goUp_0.9s_ease_forwards] transition duration-300 p-10 mt-10"
+      opacity-0 animate-[goUp_0.9s_ease_forwards] transition duration-300 p-10 mt-10 md:w-[600px]"
       onSubmit={handleSubmit}
     >
       <h2 className="font-extrabold text-3xl text-[#111144e3] text-center">
-        تسجيل عطل جديد
+        الإبلاغ عن مشكله
       </h2>
 
       <div className="border-t border-white/10 pt-6 mt-6 flex flex-col gap-5">
@@ -100,7 +107,7 @@ const CreateIssueForm = () => {
             value={formData.title}
             onChange={handleChange}
             className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] 
-            focus:outline-none transition placeholder-gray-400"
+            focus:outline-none transition placeholder-gray-400 mb-4"
             placeholder="اكتب عنوان المشكلة..."
           />
           {arrayerrors
@@ -108,7 +115,7 @@ const CreateIssueForm = () => {
             .map((err, index) => (
               <p
                 key={index}
-                className="mt-2 px-1.5 text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
+                className="px-1.5 text-red-400 font-semibold mb-2 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
               >
                 {err.msg}
               </p>
@@ -123,7 +130,7 @@ const CreateIssueForm = () => {
             onChange={handleChange}
             rows={4}
             className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] 
-            focus:outline-none transition placeholder-gray-400"
+            focus:outline-none transition placeholder-gray-400 mb-4"
             placeholder="صف المشكلة بالتفصيل..."
           ></textarea>
           {arrayerrors
@@ -131,7 +138,7 @@ const CreateIssueForm = () => {
             .map((err, index) => (
               <p
                 key={index}
-                className="px-1.5 text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
+                className="px-1.5 text-red-400 font-semibold mb-2 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
               >
                 {err.msg}
               </p>
@@ -146,7 +153,7 @@ const CreateIssueForm = () => {
             value={formData.contactInfo}
             onChange={handleChange}
             className="w-full p-3 bg-[#1b1b4d] border border-[#30307a] rounded-xl focus:ring-2 focus:ring-[#40E0D0] 
-            focus:outline-none transition placeholder-gray-400"
+            focus:outline-none transition placeholder-gray-400 mb-4"
             placeholder="رقم الهاتف أو البريد الإلكتروني..."
           />
           {arrayerrors
@@ -154,7 +161,7 @@ const CreateIssueForm = () => {
             .map((err, index) => (
               <p
                 key={index}
-                className="mt-2 px-1.5 text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
+                className="mt-2 px-1.5 text-red-400 font-semibold mb-2 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md"
               >
                 {err.msg}
               </p>
@@ -182,6 +189,10 @@ const CreateIssueForm = () => {
       >
         {loading ? "جاري الإرسال ..." : "إرسال البلاغ"}
       </button>
+
+      <h2 className="font-extrabold bo text-[#111144e3] text-center border-t border-white/10 pt-4 mt-6">
+        سيتم إرسال مشكلتك مباشرة إلي الدعم الفني
+      </h2>
 
       {error && (
         <p className="text-red-400 font-semibold mb-8 text-center bg-red-900/30 border border-red-700/30 rounded-lg py-3 shadow-md">
