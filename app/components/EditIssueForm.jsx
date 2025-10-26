@@ -47,14 +47,17 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
     setLoading(true);
     setArrayErrors([]);
 
+    const allowedKeys = [roles.CLIENT, roles.PRINT_EMPLOYEE].includes(userRole)
+      ? ["title", "description", "contactInfo", "status"]
+      : ["status"];
+
     const bodyFormData = new FormData();
     Object.keys(formData).forEach((key) => {
-      if (formData[key] !== "") {
+      if (formData[key] !== "" && allowedKeys.includes(key)) {
         bodyFormData.append(key, formData[key]);
       }
     });
 
-    // رفع الملفات (مسموح بس للعميل/الموظف)
     if ([roles.CLIENT, roles.PRINT_EMPLOYEE].includes(userRole)) {
       files.forEach((file) => bodyFormData.append("issueFiles", file));
     }
@@ -81,7 +84,10 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
       if (err.response) {
         console.log(err.response.data.error);
         const errors =
-          err.response.data.error || err.response.data.message || "حدث خطأ";
+          err.response.data.error ||
+          err.response.data.Error ||
+          err.response.data.message ||
+          "حدث خطأ";
         if (errors) {
           if (Array.isArray(errors)) {
             setArrayErrors(errors);
@@ -129,7 +135,7 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
 
         <div className="p-10">
           <div className="mb-10 flex justify-between items-center">
-            <h2 className="text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
+            <h2 className="text-xl md:text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
               تعديل الإبلاغ{" "}
               <span className="text-[#40E0D0]">
                 # {currentIssue.IssueNumber}
@@ -137,7 +143,7 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-[#40E0D0] text-4xl transition transform hover:scale-110 cursor-pointer"
+              className="text-gray-400 hover:text-[#40E0D0] text-xl md:text-4xl transition transform hover:scale-110 cursor-pointer"
             >
               &times;
             </button>
@@ -226,8 +232,8 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
                 ) : (
                   <>
                     <option value={issueStatus.NEW}>جديدة</option>
-                    <option value={issueStatus.INPROGRESS}>قيد التنفيذ</option>
-                    <option value={issueStatus.FINISHED}>منتهية</option>
+                    <option value={issueStatus.INPROGRESS}>جاري العمل</option>
+                    <option value={issueStatus.FINISHED}>انتهت</option>
                   </>
                 )}
               </select>
@@ -236,7 +242,7 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
             {/* رفع الملفات (للعميل/الموظف بس) */}
             {[roles.CLIENT, roles.PRINT_EMPLOYEE].includes(userRole) && (
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
                   الملفات الجديدة (اختياري)
                 </label>
                 <input
@@ -255,7 +261,7 @@ const EditIssueForm = ({ issueId, currentIssue, onClose, onSuccess }) => {
               </p>
             )}
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="flex justify-end gap-3 flex-wrap mt-6">
               <button
                 type="button"
                 onClick={onClose}

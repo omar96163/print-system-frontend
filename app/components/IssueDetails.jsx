@@ -169,7 +169,7 @@ const IssueDetails = ({ issueId }) => {
               </div>
             </div>
           )}
-          <div className="mt-8 text-center flex flex-row-reverse items-center justify-start gap-5">
+          <div className="mt-8 text-center flex flex-row-reverse items-center justify-start gap-5 flex-wrap">
             <button
               onClick={() => window.history.back()}
               className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
