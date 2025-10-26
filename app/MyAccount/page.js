@@ -11,6 +11,7 @@ import UpdateUserForm from "../components/UpdateUserForm.jsx";
 import OrdersByStatus from "../components/OrdersByStatus.jsx";
 import CreateIssueForm from "../components/CreateIssueForm.jsx";
 import CreateOrderForm from "../components/CreateOrderForm.jsx";
+import IssuesList from "../components/IssuesList";
 
 const MyAccount = () => {
   const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ const MyAccount = () => {
   const [reports, setreports] = useState(false);
   const [loading, setLoading] = useState(false);
   const [alluser, setalluser] = useState(false);
+  const [allissue, setallissue] = useState(false);
   const [allorders, setallorders] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [creatorder, setcreatorder] = useState(false);
@@ -92,6 +94,7 @@ const MyAccount = () => {
               onClick={() => {
                 setIsEditing(!isEditing);
                 setgetOrdersByStatus(false);
+                setallissue(false);
                 setcreatissue(false);
                 setreports(false);
                 setcreatorder(false);
@@ -109,6 +112,7 @@ const MyAccount = () => {
                 setallorders(!allorders);
                 setgetOrdersByStatus(false);
                 setreports(false);
+                setallissue(false);
                 setcreatissue(false);
                 setcreatorder(false);
                 setIsEditing(false);
@@ -119,6 +123,23 @@ const MyAccount = () => {
             >
               {allorders ? "إخفاء جميع الطلبات" : "عرض جميع الطلبات"}
             </button>
+            <button
+              type="button"
+              onClick={() => {
+                setallissue(!allissue);
+                setalluser(false);
+                setreports(false);
+                setallorders(false);
+                setIsEditing(false);
+                setcreatorder(false);
+                setcreatissue(false);
+                setgetOrdersByStatus(false);
+              }}
+              className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white"
+            >
+              {allissue ? "إخفاء جميع الإبلاغات" : "عرض جميع الإبلاغات"}
+            </button>
             {(user.role === roles.CLIENT ||
               user.role === roles.PRINT_EMPLOYEE) && (
               <button
@@ -127,6 +148,7 @@ const MyAccount = () => {
                   setcreatissue(!creatissue);
                   setgetOrdersByStatus(false);
                   setcreatorder(false);
+                  setallissue(false);
                   setallorders(false);
                   setIsEditing(false);
                   setalluser(false);
@@ -143,6 +165,7 @@ const MyAccount = () => {
                 onClick={() => {
                   setcreatorder(!creatorder);
                   setcreatissue(false);
+                  setallissue(false);
                   setallorders(false);
                   setIsEditing(false);
                 }}
@@ -162,6 +185,7 @@ const MyAccount = () => {
                   setreports(false);
                   setallorders(false);
                   setIsEditing(false);
+                  setallissue(false);
                   setcreatissue(false);
                   setgetOrdersByStatus(false);
                 }}
@@ -178,6 +202,7 @@ const MyAccount = () => {
                   setreports(!reports);
                   setalluser(false);
                   setallorders(false);
+                  setallissue(false);
                   setIsEditing(false);
                   setgetOrdersByStatus(false);
                 }}
@@ -195,6 +220,7 @@ const MyAccount = () => {
                   setgetOrdersByStatus(!getOrdersByStatus);
                   setreports(false);
                   setalluser(false);
+                  setallissue(false);
                   setallorders(false);
                   setIsEditing(false);
                   setcreatissue(false);
@@ -210,6 +236,8 @@ const MyAccount = () => {
           </div>
 
           {getOrdersByStatus && <OrdersByStatus />}
+
+          {allissue && <IssuesList />}
 
           {reports && <ReportsPage />}
 
