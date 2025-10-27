@@ -709,7 +709,7 @@ const EditOrderForm = ({ orderId, currentOrder, onClose, onSuccess }) => {
               </p>
             )}
 
-            <div className="flex justify-end gap-4 mt-10">
+            <div className="flex justify-end flex-wrap gap-4 mt-10">
               <button
                 type="button"
                 onClick={onClose}
