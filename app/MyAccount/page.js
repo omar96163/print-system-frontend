@@ -109,8 +109,10 @@ const MyAccount = () => {
                   setallorders(false);
                   setalluser(false);
                 }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-               transition transform duration-300 shadow-md text-white"
+                className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white ${
+                  isEditing ? "translate-y-1.5" : ""
+                }`}
               >
                 {isEditing ? "إلغاء تعديل البيانات" : "تعديل البيانات الشخصية"}
               </button>
@@ -126,8 +128,10 @@ const MyAccount = () => {
                   setIsEditing(false);
                   setalluser(false);
                 }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                transition transform duration-300 shadow-md text-white"
+                className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white ${
+                  allorders ? "translate-y-1.5" : ""
+                }`}
               >
                 {allorders ? "إخفاء جميع الطلبات" : "عرض جميع الطلبات"}
               </button>
@@ -143,8 +147,10 @@ const MyAccount = () => {
                   setcreatissue(false);
                   setgetOrdersByStatus(false);
                 }}
-                className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                transition transform duration-300 shadow-md text-white"
+                className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                transition transform duration-300 shadow-md text-white ${
+                  allissue ? "translate-y-1.5" : ""
+                }`}
               >
                 {allissue ? "إخفاء جميع الإبلاغات" : "عرض جميع الإبلاغات"}
               </button>
@@ -161,8 +167,10 @@ const MyAccount = () => {
                     setIsEditing(false);
                     setalluser(false);
                   }}
-                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] text-white
-                cursor-pointer active:scale-90 hover:scale-105 transition transform duration-300 shadow-md"
+                  className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                  transition transform duration-300 shadow-md text-white ${
+                    creatissue ? "translate-y-1.5" : ""
+                  }`}
                 >
                   {creatissue ? "إلغاء الإبلاغ" : "الدعم الفني"}
                 </button>
@@ -177,8 +185,10 @@ const MyAccount = () => {
                     setallorders(false);
                     setIsEditing(false);
                   }}
-                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                    transition transform duration-300 shadow-md text-white"
+                  className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                  transition transform duration-300 shadow-md text-white ${
+                    creatorder ? "translate-y-1.5" : ""
+                  }`}
                 >
                   {creatorder ? "إلغاء الطلب" : "إنشاء طلب"}
                 </button>
@@ -197,8 +207,10 @@ const MyAccount = () => {
                     setcreatissue(false);
                     setgetOrdersByStatus(false);
                   }}
-                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                  transition transform duration-300 shadow-md text-white"
+                  className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                  transition transform duration-300 shadow-md text-white ${
+                    alluser ? "translate-y-1.5" : ""
+                  }`}
                 >
                   {alluser ? "إخفاء المستخدمين 👥" : "عرض المستخدمين 👥"}
                 </button>
@@ -214,8 +226,10 @@ const MyAccount = () => {
                     setIsEditing(false);
                     setgetOrdersByStatus(false);
                   }}
-                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                    transition transform duration-300 shadow-md text-white"
+                  className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                  transition transform duration-300 shadow-md text-white ${
+                    reports ? "translate-y-1.5" : ""
+                  }`}
                 >
                   {reports ? "إخفاء التقارير" : "إنشاء التقارير"}
                 </button>
@@ -233,8 +247,10 @@ const MyAccount = () => {
                     setIsEditing(false);
                     setcreatissue(false);
                   }}
-                  className="py-3 px-6 rounded-2xl font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
-                    transition transform duration-300 shadow-md text-white "
+                  className={`py-3 px-6 rounded-md font-bold bg-linear-to-r from-[#111144] to-[#111144a9] cursor-pointer active:scale-90 hover:scale-105 
+                  transition transform duration-300 shadow-md text-white ${
+                    getOrdersByStatus ? "translate-y-1.5" : ""
+                  }`}
                 >
                   {getOrdersByStatus
                     ? "إخفاء الطلبات حسب الحالة"
