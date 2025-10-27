@@ -298,7 +298,7 @@ const MyAccount = () => {
         </article>
       )}
       {error && (
-        <p className="text-red-500 font-semibold underline text-center">
+        <p className="text-red-500 font-semibold underline text-center mt-20">
           {error}
         </p>
       )}
