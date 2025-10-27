@@ -62,7 +62,6 @@ const CreateOrderForm = () => {
       }
     });
 
-    // إضافة الملفات
     files.forEach((file) => bodyFormData.append("orderFiles", file));
 
     try {
@@ -78,7 +77,7 @@ const CreateOrderForm = () => {
         }
       );
 
-      alert(res.data.data.message);
+      alert(res.data.message);
       setFormData({
         clientName: "",
         contactInfo: "",
@@ -98,7 +97,6 @@ const CreateOrderForm = () => {
       setarrayErrors([]);
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data.error);
         const errors =
           err.response.data.error || err.response.data.message || "حدث خطأ";
         if (errors) {
