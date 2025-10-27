@@ -166,7 +166,9 @@ const OrderDetails = ({ orderId }) => {
               </p>
               {order.departmentClient && (
                 <p className="text-[#111144bb]">
-                  <span className="font-semibold text-[#111144]">القسم : </span>
+                  <span className="font-semibold text-[#111144]">
+                    جهة العميل :{" "}
+                  </span>
                   {order.departmentClient}
                 </p>
               )}
@@ -176,17 +178,35 @@ const OrderDetails = ({ orderId }) => {
             <div className="bg-[#f8f9ff] p-4 rounded-lg border-b-2 border-[#111144]">
               <h2 className="font-bold text-gray-800 mb-2">تفاصيل الطلب</h2>
               <p>
-                <span className="font-semibold text-[#111144]">الحالة :</span>
+                <span
+                  className={`font-semibold text-[#111144] ${
+                    order.status === "قيد المراجعة"
+                      ? "border-yellow-500"
+                      : order.status === "قيد الطباعة"
+                      ? "border-blue-500"
+                      : order.status === "جاهزة للتسليم"
+                      ? "border-green-500"
+                      : order.status === "مرفوضة"
+                      ? "border-red-500"
+                      : order.status === "ملغي"
+                      ? "border-purple-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  الحالة :
+                </span>
                 <span
                   className={`px-2 py-1 rounded text-xs font-semibold mr-2 ${
-                    order.status === "قيد الانتظار"
+                    order.status === "قيد المراجعة"
                       ? "bg-yellow-100 text-yellow-800"
                       : order.status === "قيد الطباعة"
                       ? "bg-blue-100 text-blue-800"
-                      : order.status === "منتهي"
+                      : order.status === "جاهزة للتسليم"
                       ? "bg-green-100 text-green-800"
-                      : order.status === "مرفوض"
+                      : order.status === "مرفوضة"
                       ? "bg-red-100 text-red-800"
+                      : order.status === "ملغي"
+                      ? "bg-purple-100 text-purple-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
@@ -203,6 +223,14 @@ const OrderDetails = ({ orderId }) => {
                 </span>{" "}
                 {order.totalPrice || "غير محدد"}
               </p>
+              {order.departmentWork && order.status === "قيد الطباعة" && (
+                <p className="text-[#111144bb]">
+                  <span className="font-semibold text-[#111144]">
+                    قسم العمل : 
+                  </span>
+                  {order.departmentWork}
+                </p>
+              )}
             </div>
           </div>
 

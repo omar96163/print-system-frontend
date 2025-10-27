@@ -348,11 +348,11 @@ const EditOrderForm = ({ orderId, currentOrder, onClose, onSuccess }) => {
         `}</style>
 
         <div className="p-10">
-          <div className="flex justify-between items-center">
-            <h2 className="text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
+          <div className="mb-10 flex justify-between items-center">
+            <h2 className="text-xl md:text-4xl font-extrabold text-white tracking-wide drop-shadow-lg">
               تعديل الطلب{" "}
               <span className="text-[#40E0D0]">
-                #{currentOrder.orderNumber}
+                # {currentOrder.orderNumber}
               </span>
             </h2>
             <button
