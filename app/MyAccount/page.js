@@ -99,16 +99,15 @@ const MyAccount = () => {
             <button
               onClick={() => setlogout(!logout)}
               className={`py-2 px-3 rounded-2xl font-bold bg-red-500 cursor-pointer active:scale-90 hover:scale-105 
-              transition transform duration-300 shadow-md text-white ${
-                logout ? "-translate-y-1.5" : ""
-              }`}
+              transition transform duration-300 shadow-md text-white opacity-0 animate-[goDown_1s_ease_forwards_1.3s] 
+              ${logout ? "-translate-y-1.5" : ""}`}
             >
               تسجيل الخروج
             </button>
 
             {logout && <Logout onClose={() => setlogout(false)} />}
             <div
-              className="flex flex-row flex-wrap items-center justify-center gap-5 opacity-0 animate-[goDown_1s_ease_forwards_1.3s] 
+              className="flex flex-row flex-wrap items-center justify-center gap-5 opacity-0 animate-[goDown_1s_ease_forwards_1.6s] 
               transition duration-300 mt-5"
             >
               <button
