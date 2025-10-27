@@ -12,10 +12,12 @@ import OrdersByStatus from "../components/OrdersByStatus.jsx";
 import CreateIssueForm from "../components/CreateIssueForm.jsx";
 import CreateOrderForm from "../components/CreateOrderForm.jsx";
 import IssuesList from "../components/IssuesList";
+import Logout from "../components/Logout";
 
 const MyAccount = () => {
   const [user, setUser] = useState(null);
   const [error, seterror] = useState("");
+  const [logout, setlogout] = useState(false);
   const [reports, setreports] = useState(false);
   const [loading, setLoading] = useState(false);
   const [alluser, setalluser] = useState(false);
@@ -94,6 +96,17 @@ const MyAccount = () => {
               </strong>
             </p>
 
+            <button
+              onClick={() => setlogout(!logout)}
+              className={`py-2 px-3 rounded-2xl font-bold bg-red-500 cursor-pointer active:scale-90 hover:scale-105 
+              transition transform duration-300 shadow-md text-white ${
+                logout ? "-translate-y-1.5" : ""
+              }`}
+            >
+              تسجيل الخروج
+            </button>
+
+            {logout && <Logout onClose={() => setlogout(false)} />}
             <div
               className="flex flex-row flex-wrap items-center justify-center gap-5 opacity-0 animate-[goDown_1s_ease_forwards_1.3s] 
               transition duration-300 mt-5"
